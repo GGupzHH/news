@@ -39,6 +39,30 @@
     </div>
     <script src="/node_modules/jquery/dist/jquery.js"></script>
     <script>
+        // 客户端发送表单提交
+        $("#signin_form").on("submit", function(e) {
+            // 1. 阻止默认行为
+            e.preventDefault();
+            // 2. 获取表单数据
+            var formdata = $(this).serialize();
+            // console.log(formdata);
+
+            // 3. 发送ajax -> post
+            $.post("/signin", formdata, function(data) {
+                // data 服务端返回响应
+
+                // 如果200
+                if (data.code === 200) {
+                    // 来到列表页
+                    window.location.href = "/";
+                } else {
+                    alert(data.msg);
+                }
+
+
+
+            });
+        });
     </script>
 </body>
 
