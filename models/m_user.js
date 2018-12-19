@@ -17,8 +17,20 @@ exports.addcreateUser = (body, callback) => {
   var sqlstr = 'INSERT INTO `users` SET ?';
   connection.query(sqlstr, body, (error, data) => {
     if (error) {
-      callback(error, null)
+      return callback(error, null)
     }
     callback(null, data)
+  })
+}
+
+exports.checkNickname = (nickname, callback) => {
+
+  var sqlstr = 'SELECT *FROM `users` WHERE nickname=?';
+  connection.query(sqlstr, nickname, (error, data) =>{
+    if (error) {
+      callback(error, null)
+    }else {
+      callback(null, data)
+    }
   })
 }

@@ -12,7 +12,11 @@ router
   .post('/signup', c_user.createUser)
   .get('/', c_topic.showTopicList)
   .get('/topic/create', c_topic.showCreateTopic)
+  .get('/signout', c_user.quitLogoinuser)
   .post('/createTopic', c_topic.handleCreateTopic)
-
-
+  .get('/showList/:topicId', c_topic.showList)
+  .get('/topic/:topicId/edit', c_topic.modification)
+  .post('/modification/:topicId', c_topic.modificationLists)
+  .get('/topic/detail/delete/:topicId', c_topic.deleteLists)
+// /topic/detail/delete/8
 module.exports = router

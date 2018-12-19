@@ -11,16 +11,16 @@
     <section class="container">
         <div class="row">
             <div class="col-md-5">
-                <form id="form" action="/topic/edit">
+                <form id="forms" action="/topic/edit">
                     <!-- 表单隐藏域 -->
                     <input type="hidden" id="topic_id" value="">
                     <div class="form-group">
                         <label for="title">标题</label>
-                        <input type="text" class="form-control" id="title" name="title" value="话题标题">
+                        <input type="text" class="form-control" id="title" name="title" value="{{Listdaat.title}}">
                     </div>
                     <div class="form-group">
                         <label for="content">内容</label>
-                        <textarea class="form-control" id="content" name="content" rows="10">话题内容</textarea>
+                        <textarea class="form-control" id="content" name="content" rows="10">{{Listdaat.content}}</textarea>
                     </div>
                     <button type="submit" class="btn btn-default">提交</button>
                 </form>
@@ -32,6 +32,17 @@
     <script src="/node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <script>
         // 处理表单提交
+        $('#forms').on('submit', function (e) {
+            e.preventDefault();
+            var fromdata = $(this).serialize();
+            $.post('/modification/{{Listdaat.id}}', fromdata, function (data) {
+                if (data.code === 1) {
+                    window.location.href = '/';
+                } else {
+                    alert(data.msg)
+                }
+            })
+        })
     </script>
 </body>
 
