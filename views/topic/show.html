@@ -22,7 +22,7 @@
                 {{else}}
                 <article class="markdown-body">
                     <h1>{{topicContetnt.title}}</h1>
-                    {{if userIdTopic === topicContetnt.userId}}
+                    {{if sessionUser.id === topicContetnt.userId}}
                     <a href="/topic/{{topicContetnt.id}}/edit">编辑</a>
                     <a href="/topic/detail/delete/{{topicContetnt.id}}" id="delete_topic">删除</a>
                     {{/if}}

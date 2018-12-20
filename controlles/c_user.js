@@ -3,21 +3,18 @@ const moment = require('moment');
 
 
 // 登录页显示
-exports.showSignin = (request, response) => {
+exports.showSignin = (request, response, next) => {
   response.render('signin.html')
 }
 
 
 // 用户登录
-exports.handleSignin = (request, response) => {
+exports.handleSignin = (request, response, next) => {
   const body = request.body;
   M_user.checkEmail(body.email,
     (error, data) => {
       if (error) {
-        return response.send({
-          code: 500,
-          msg: '服务器出错！'
-        })
+        return next(error)
       }
       if (data.length === 0) {
         return response.send({
@@ -41,23 +38,20 @@ exports.handleSignin = (request, response) => {
 
 
 // 注册页面
-exports.showcreateUser = (request, response) => {
+exports.showcreateUser = (request, response, next) => {
   response.render('register.html')
 }
 
 
 // 创建新用户
-exports.createUser = (request, response) => {
+exports.createUser = (request, response, next) => {
   var body = request.body;
   body.createdAt = moment().format();
   body.gender = '男'
   console.log(body)
   M_user.checkEmail(body.email, (error, data) => {
     if (error) {
-      return response.send({
-        code: 500,
-        mag: '服务器在在在一次出现了错误11111！'
-      })
+      return next(error)
     }
     if (data[0]) {
       return response.send({
@@ -67,23 +61,14 @@ exports.createUser = (request, response) => {
     }
     M_user.checkNickname(body.nickname, (error, data) => {
       if (error) {
-        return response.send({
-          code: 500,
-          mag: '服务器在在在一次出现了错误22222222！'
-        })
+        return next(error)
       }
       if (data[0]) {
-        return response.send({
-          code: 2,
-          msg: '用户名存在'
-        })
+        return next(error)
       }
       M_user.addcreateUser(body, (error, data) => {
         if (error) {
-          return response.send({
-            code: 500,
-            mag: '服务器在在在一次出现了错误3333333333！'
-          })
+          return next(error)
         }
         response.send({
           code: 200,
@@ -96,7 +81,7 @@ exports.createUser = (request, response) => {
 
 
 // 用户退出
-exports.quitLogoinuser = (request, response) => {
+exports.quitLogoinuser = (request, response, next) => {
   delete request.session.user;
   response.redirect('/')
 }

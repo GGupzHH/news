@@ -33,10 +33,35 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+// 设置中间件  然后使用node中的一个全局变量 在这里使用就可以在页面中的模板引擎中使用
+app.use((request, response, next) => {
+    // locals是全局对象  就可以直接在页面中的moan引擎中使用了
+    app.locals.sessionUser = request.session.user;
+    next(); // 这里使用next是因为要传递给后面的路由
+})
+
+
 // 配置路由
 app.use(router)
 
 
+// 设置404 页面  当上面的路由没有匹配的时候  到这里   这时候就返回
+// 404页面  app.use(() => {响应任何表示}符)
+app.use((request, response, next)=> {
+    response.render('404.html');
+    next();
+})
+
+// 返回错误对象    next可以有一个参数  但是这个参数只能是前面所有的错误对象
+// next的作用
+//          每一个中间件是不能相互联系的   如果上一个中间件标识已经匹配了， 那么后面的中间件就不会响应   但是我们想让后面的中间件响应  就需要在上一个中间件里面写next()
+app.use((error, request, response, next) => {
+    res.send({
+        code: 500,
+        msg: err.message
+    });
+})
 
 
 // 配置端口 开启服务器

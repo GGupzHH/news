@@ -2,13 +2,10 @@ const moment = require('moment');
 const M_topic = require('../models/m_topic')
 
 // 返回首页
-exports.showTopicList = (request, response) => {
+exports.showTopicList = (request, response, next) => {
   M_topic.findAllTopics((error, data) => {
     if (error) {
-      return {
-        cade: 500,
-        mag: '服务器又出错了'
-      }
+      return next(error)
     }
     response.render('index.html', {
       topics: data,
@@ -18,14 +15,14 @@ exports.showTopicList = (request, response) => {
 }
 
 // 跳转发布页面
-exports.showCreateTopic = (request, response) => {
+exports.showCreateTopic = (request, response, next) => {
   response.render('topic/create.html', {
     user: request.session.user
   })
 }
 
 // 添加文章
-exports.handleCreateTopic = (request, response) => {
+exports.handleCreateTopic = (request, response, next) => {
   // console.log(request.body)
 
   var body = request.body
@@ -35,10 +32,7 @@ exports.handleCreateTopic = (request, response) => {
   body.userId = request.session.user.id;
   M_topic.addTopic(body, (error, data) => {
     if (error) {
-      return {
-        code: 500,
-        mag: '服务器再一次出错了！'
-      }
+      return next(error)
     }
     response.send({
         code: 200,
@@ -48,14 +42,11 @@ exports.handleCreateTopic = (request, response) => {
 }
 
 // 像是文章详情页
-exports.showList = (request, response) => {
+exports.showList = (request, response, next) => {
   const topicId = request.params.topicId;
   M_topic.showListes(topicId, (error, data) => {
     if (error) {
-      return response.send({
-        code: 500,
-        msg: '服务器呦呦呦呦错误了！！！！！'
-      })
+      return next(error)
     }
     response.render('topic/show.html', {
       topicContetnt: data[0],
@@ -65,14 +56,11 @@ exports.showList = (request, response) => {
 }
 
 // 修改文章显示文章（待修改）
-exports.modification = (request, response) => {
+exports.modification = (request, response, next) => {
   const topicId = request.params.topicId;
   M_topic.showListes(topicId, (error, data) => {
     if (error) {
-      return response.send({
-        code: 500,
-        msg: '服务器....出错了'
-      })
+      return next(error)
     }
     response.render('topic/edit.html', {
       Listdaat: data[0]
@@ -81,15 +69,12 @@ exports.modification = (request, response) => {
 }
 
 // 修改跳转
-exports.modificationLists = (request, response) => {
+exports.modificationLists = (request, response, next) => {
   const topicId = request.params.topicId;
   const body = request.body;
   M_topic.modificationList(topicId, body, (error, data) => {
     if (error) {
-      return response.send({
-        code: 500,
-        msg: '服务器错了你完蛋了'
-      })
+      return next(error)
     }
     response.send({
       code: 1,
@@ -100,15 +85,12 @@ exports.modificationLists = (request, response) => {
 
 
 // 删除文章
-exports.deleteLists = (request, response) => {
+exports.deleteLists = (request, response, next) => {
   const topicId = request.params.topicId;
   console.log(topicId)
   M_topic.deleteList(topicId, (error, data) => {
     if (error) {
-      return response.send({
-        code: 500,
-        msg: '服务器出错额'
-      })
+      return next(error)
     }
     // response.send({
     //   code: 1,
