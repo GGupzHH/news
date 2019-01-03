@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
+<div id="box">
+
+</div>
+<script src="/node_modules/vue.js"></script>
+<script type="text/javascript">
+var setI = '';
+new Vue({
+  el: '#box',
+  template: `
+    <div>
+      <button type="button" @click="fn">嗨起来</button>
+      <button type="button" @click="fs">停一下</button>
+      <h1 v-text="str"></h1>
+    </div>
+  `,
+  data: function () {
+    return {
+      str: '我叫马金悦，我是个变态!!!'
+    }
+  },
+  methods: {
+    fn () {
+      clearInterval(setI)
+      setI = setInterval(function () {
+
+        var str = this.str.split('');
+        var first = str.shift()
+        str.push(first)
+        this.str = str.join('')
+      }.bind(this), 450)
+      // console.log(first)
+      // console.log(str)
+      // console.log(this.str)
+      // this.str.split('').push(this.str.split('').shift()).join('')
+    },
+    fs () {
+      clearInterval(setI)
+    }
+  }
+})
+</script>
+</body>
+</html>

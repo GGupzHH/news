@@ -50,7 +50,7 @@ exports.showList = (request, response, next) => {
     }
     response.render('topic/show.html', {
       topicContetnt: data[0],
-      userIdTopic: request.session.user?request.session.user.id:0
+      // userIdTopic: request.session.user?request.session.user.id:0
     })
   })
 }

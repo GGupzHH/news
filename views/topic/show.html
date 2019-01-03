@@ -62,6 +62,29 @@
     <script>
         // 点击删除
 
+
+        function fn () {
+            console.log('1234567')
+        };
+        (function () {
+            if (false) {
+                function fn () {
+                    console.log('asdasd')
+                }
+            }
+            fn()
+        })();
+
+
+
+        function fn () {
+            console.log(this)
+        }
+        var bar = {
+            baz: fn
+        }
+        ;(bar.baz)();
+        (false || bar.baz)();
     </script>
 </body>
 
